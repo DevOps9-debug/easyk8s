@@ -36,7 +36,7 @@ sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.to
 systemctl restart containerd
 
 echo "=== Installing Kubernetes components ==="
-curl -fsSL https://pkgs.k8s.io/core:/stable:/vv1.33/deb/Release.key \
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key \
 | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 echo \
