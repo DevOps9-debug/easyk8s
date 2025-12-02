@@ -61,29 +61,7 @@ chown $(id -u):$(id -g) $HOME/.kube/config
 echo "=== Installing Calico CNI ==="
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
-echo "=== Installing MetalLB ==="
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
 
-echo "=== Waiting for MetalLB pods ==="
-kubectl wait --namespace metallb-system --for=condition=Available deployment/controller --timeout=90s
-
-echo "=== Applying MetalLB IP Pool ==="
-cat <<EOF | kubectl apply -f -
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: default-pool
-  namespace: metallb-system
-spec:
-  addresses:
-    - 192.168.0.24-192.168.0.50
----
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: default-advert
-  namespace: metallb-system
-EOF
 
 echo "=== Generating worker join command ==="
 kubeadm token create --print-join-command
